@@ -1248,14 +1248,14 @@ static void check_variables(void)
 
    var.key = "gambatte_gb_colorization";
 
-   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value) {
+   //if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value) {
       // Should really wait until the end to call setColorCorrection(),
       // but don't want to have to change the indentation of all the
       // following code... (makes it too difficult to see the changes in
       // a git diff...)
-      gb.setColorCorrection(gb.isCgb() && (colorCorrection != 0));
-      return;
-   }
+   //   gb.setColorCorrection(gb.isCgb() && (colorCorrection != 0));
+   //   return;
+   //}
    
    if (gb.isCgb()) {
       gb.setColorCorrection(colorCorrection != 0);
@@ -1265,6 +1265,9 @@ static void check_variables(void)
    // else it is a GB-mono game -> set a color palette
    //bool gb_colorization_old = gb_colorization_enable;
 
+// hard set to auto
+      gb_colorization_enable = 1;
+/*
    if (strcmp(var.value, "disabled") == 0)
       gb_colorization_enable = 0;
    else if (strcmp(var.value, "auto") == 0)
@@ -1277,7 +1280,7 @@ static void check_variables(void)
       gb_colorization_enable = 4;
    else if (strcmp(var.value, "SGB") == 0)
       gb_colorization_enable = 5;
-
+*/
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
    //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
 
