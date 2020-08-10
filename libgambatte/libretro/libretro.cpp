@@ -757,10 +757,17 @@ void retro_init(void)
 {
    struct retro_log_callback log;
 
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Initializing core\r\n");
+
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Setting log callback\r\n");
+
    if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
       log_cb = log.log;
    else
       log_cb = log_null;
+
+
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Setting up audio interface\r\n");
 
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
@@ -783,6 +790,8 @@ void retro_init(void)
    resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
    resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
 
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Setting fps\r\n");
+
    if (environ_cb)
    {
       g_timing.fps = fps;
@@ -790,19 +799,28 @@ void retro_init(void)
    }
 #endif
 
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Setting video buffer\r\n");
+
 #ifdef _3DS
    video_buf = (gambatte::video_pixel_t*)linearMemAlign(VIDEO_BUFF_SIZE, 128);
 #else
    video_buf = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
 #endif
 
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Checking system specs\r\n");
+
    check_system_specs();
+   
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Checking boot loader from file\r\n");
    
    //gb/gbc bootloader support
    gb.setBootloaderGetter(get_bootloader_from_file);
 #ifdef DUAL_MODE
    gb2.setBootloaderGetter(get_bootloader_from_file);
 #endif
+
+
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Getting bootloader\r\n");
    
    struct retro_variable var = {0};
    var.key = "gambatte_gb_bootloader";
@@ -817,6 +835,8 @@ void retro_init(void)
    }
    else
       use_official_bootloader = false;
+
+   fprintf(stdout, "[Libretro.cpp] - retro_init: Checking input bit mask\r\n");
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
       libretro_supports_bitmasks = true;
@@ -841,10 +861,14 @@ void retro_deinit(void)
 
 void retro_set_environment(retro_environment_t cb)
 {
+   fprintf(stdout, "[Libretro.cpp] - retro_set_environment: Setting core options\r\n");
+
    struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
    libretro_set_core_options(environ_cb);
+
+   fprintf(stdout, "[Libretro.cpp] - retro_set_environment: Setting vfs interface\r\n");
 
    vfs_iface_info.required_interface_version = 1;
    vfs_iface_info.iface                      = NULL;
@@ -1001,7 +1025,7 @@ static void load_custom_palette(void)
       return;  // unable to find any custom palette file
 
 #if 0
-   fprintf(RETRO_LOG_INFO, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
+   fprintf(stdout, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
 #endif
    unsigned line_count = 0;
    for (std::string line; getline(palette_file, line); ) // iterate over file lines
@@ -1415,6 +1439,8 @@ static unsigned pow2ceil(unsigned n) {
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+   fprintf(stdout, "[Libretro.cpp] - retro_load_game: Initializing game load\r\n");
+
    bool can_dupe = false;
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
