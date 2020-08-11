@@ -1100,19 +1100,9 @@ static void check_variables(void)
 
    unsigned i, j;
 
-   unsigned colorCorrection = 0;
+   unsigned colorCorrection = 1;
    struct retro_variable var = {0};
-   /*
-   var.key = "gambatte_gbc_color_correction";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (!strcmp(var.value, "GBC only"))
-         colorCorrection = 1;
-      else if (!strcmp(var.value, "always"))
-         colorCorrection = 2;
-   }
-   */
-   colorCorrection = 1;
+
    fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction value: %d\r\n", colorCorrection);
    
    unsigned colorCorrectionMode = 0;
@@ -1126,15 +1116,7 @@ static void check_variables(void)
    fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction mode: %d\r\n", colorCorrectionMode);
    
    float colorCorrectionBrightness = 0.5f; /* central */
-   var.key   = "gambatte_gbc_frontlight_position";
-   var.value = NULL;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (!strcmp(var.value, "above screen"))
-         colorCorrectionBrightness = 1.2f;
-      else if (!strcmp(var.value, "below screen"))
-         colorCorrectionBrightness = 0.0f;
-   }
+
    gb.setColorCorrectionBrightness(colorCorrectionBrightness);
    fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction brightness: %f\r\n", colorCorrectionBrightness);
    
@@ -1286,15 +1268,6 @@ static void check_variables(void)
 
    var.key = "gambatte_gb_colorization";
 
-   //if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value) {
-      // Should really wait until the end to call setColorCorrection(),
-      // but don't want to have to change the indentation of all the
-      // following code... (makes it too difficult to see the changes in
-      // a git diff...)
-   //   gb.setColorCorrection(gb.isCgb() && (colorCorrection != 0));
-   //   return;
-   //}
-   
    if (gb.isCgb()) {
       gb.setColorCorrection(colorCorrection != 0);
       return;
