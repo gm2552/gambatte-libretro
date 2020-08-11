@@ -1096,6 +1096,8 @@ static void load_custom_palette(void)
 
 static void check_variables(void)
 {
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Checking variables\r\n");
+
    unsigned i, j;
 
    unsigned colorCorrection = 0;
@@ -1109,6 +1111,8 @@ static void check_variables(void)
          colorCorrection = 2;
    }
    
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction value: %d\r\n", colorCorrection);
+   
    unsigned colorCorrectionMode = 0;
    var.key   = "gambatte_gbc_color_correction_mode";
    var.value = NULL;
@@ -1116,6 +1120,8 @@ static void check_variables(void)
       colorCorrectionMode = 1;
    }
    gb.setColorCorrectionMode(colorCorrectionMode);
+   
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction mode: %d\r\n", colorCorrectionMode);
    
    float colorCorrectionBrightness = 0.5f; /* central */
    var.key   = "gambatte_gbc_frontlight_position";
@@ -1128,6 +1134,8 @@ static void check_variables(void)
          colorCorrectionBrightness = 0.0f;
    }
    gb.setColorCorrectionBrightness(colorCorrectionBrightness);
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction brightness: %d\r\n", colorCorrectionBrightness);
+   
    
    unsigned darkFilterLevel = 0;
    var.key   = "gambatte_dark_filter_level";
@@ -1137,6 +1145,8 @@ static void check_variables(void)
       darkFilterLevel = static_cast<unsigned>(atoi(var.value));
    }
    gb.setDarkFilterLevel(darkFilterLevel);
+   
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Dark filter level: %d\r\n", darkFilterLevel);
    
    var.key   = "gambatte_up_down_allowed";
    var.value = NULL;
@@ -1150,6 +1160,8 @@ static void check_variables(void)
    }
    else
       up_down_allowed = false;
+
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Up down allowed: %d\r\n", up_down_allowed);
 
    /* Interframe blending option has its own handler */
    check_frame_blend_variable();
