@@ -1102,6 +1102,7 @@ static void check_variables(void)
 
    unsigned colorCorrection = 0;
    struct retro_variable var = {0};
+   /*
    var.key = "gambatte_gbc_color_correction";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
@@ -1110,7 +1111,8 @@ static void check_variables(void)
       else if (!strcmp(var.value, "always"))
          colorCorrection = 2;
    }
-   
+   */
+   colorCorrection = 1;
    fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction value: %d\r\n", colorCorrection);
    
    unsigned colorCorrectionMode = 0;
@@ -1134,7 +1136,7 @@ static void check_variables(void)
          colorCorrectionBrightness = 0.0f;
    }
    gb.setColorCorrectionBrightness(colorCorrectionBrightness);
-   fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction brightness: %d\r\n", colorCorrectionBrightness);
+   fprintf(stdout, "[Libretro.cpp] - check_variables: Color correction brightness: %f\r\n", colorCorrectionBrightness);
    
    
    unsigned darkFilterLevel = 0;
