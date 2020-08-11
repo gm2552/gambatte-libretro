@@ -866,7 +866,7 @@ void retro_set_environment(retro_environment_t cb)
    struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
-   libretro_set_core_options(environ_cb);
+   //libretro_set_core_options(environ_cb);
 
    fprintf(stdout, "[Libretro.cpp] - retro_set_environment: Setting vfs interface\r\n");
 
@@ -1346,15 +1346,23 @@ static void check_variables(void)
          // user-defined internal palette
          if (gbc_bios_palette == 0)
          {
+            /*
             var.key = "gambatte_gb_internal_palette";
             if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
             {
+               fprintf(stdout, "[Libretro.cpp] - check_variables: gambatte_gb_internal_palette: %s\r\n", var.value);
                // Load the selected internal palette
                gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
                if (!strncmp("GBC", var.value, 3)) {
                   isGbcPalette = true;
                }
-            }
+            }*/
+            var.value = "GB - DMG";            
+            gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+            if (!strncmp("GBC", var.value, 3))
+               isGbcPalette = true;
+            fprintf(stdout, "[Libretro.cpp] - check_variables: gambatte_gb_internal_palette: %s\r\n", var.value);
+            
          }
          break;
       case 2:
