@@ -659,7 +659,7 @@ namespace input
    static const map btn_map[] = {
       { RETRO_DEVICE_ID_JOYPAD_A, gambatte::InputGetter::A },
       { RETRO_DEVICE_ID_JOYPAD_B, gambatte::InputGetter::B },
-      { RETRO_DEVICE_ID_JOYPAD_SELECT, gambatte::InputGetter::SELECT },
+      { RETRO_DEVICE_ID_JOYPAD_Y, gambatte::InputGetter::SELECT },
       { RETRO_DEVICE_ID_JOYPAD_START, gambatte::InputGetter::START },
       { RETRO_DEVICE_ID_JOYPAD_RIGHT, gambatte::InputGetter::RIGHT },
       { RETRO_DEVICE_ID_JOYPAD_LEFT, gambatte::InputGetter::LEFT },
@@ -679,12 +679,27 @@ class SNESInput : public gambatte::InputGetter
          {
             int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
             for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+            {
+               
                res |= (ret & (1 << input::btn_map[i].snes)) ? input::btn_map[i].gb : 0;
+            }
+            
+            fprintf(stdout, "State of button bitmask: %d\r\n ", res);
          }
          else
          {
+            for (i = 0; i < 16; ++i)
+            {
+               int16_t buttonState = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, i);
+               //fprintf(stdout, "State of button %d: %d\r\n ", i, buttonState);
+            }
+         
             for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+            {               
+               //int16_t buttonState = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes);
                res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+               //fprintf(stdout, "State of buttons %d: %d\r\n ", i, buttonState);
+            }
          }
 
          if (!up_down_allowed)
@@ -838,8 +853,8 @@ void retro_init(void)
 
    fprintf(stdout, "[Libretro.cpp] - retro_init: Checking input bit mask\r\n");
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
-      libretro_supports_bitmasks = true;
+   //if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
+      libretro_supports_bitmasks = false;
 
 }
 
