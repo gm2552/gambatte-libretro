@@ -1,5 +1,6 @@
-# GameBoy/GameBoy Color:  gambatte-libretor - AtGames Legends Ultimate Mod
+# GameBoy/GameBoy Color:  gambatte-libretro - AtGames Legends Ultimate Mod
 
+Current release is v1.0.0.  It can be downloaded from [here](https://github.com/gm2552/gambatte-libretro/releases/download/1.0.0/gambatte_libretro_alu_1.0.0.so).
 
 ## Acknowledgements 
 ALU mod gamb for gambatte-libretro, originally sourced from https://github.com/libretro/gambatte-libretro.  Includes mods specific to the AtGames Legends Ultimate gaming console.
